@@ -66,21 +66,24 @@ def send_login_request(wifi_name):
         formatted_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         print(f"{formatted_time}: ChromeDriver错误")
         print(e)
+        return False
 
     finally:
         driver.quit()
 
+    return True
+
 
 def main(limit):
-    while limit:
+    flag = False
+    while limit and not flag:
         limit -= 1
         wifi_name = get_wifi_name()
         if wifi_name is None:
             time.sleep(1)
             continue
         if STUDENT_SSID == wifi_name or TEACHER_SSID == wifi_name:
-            send_login_request(wifi_name)
-            break
+            flag = send_login_request(wifi_name)
         else:
             break
 
